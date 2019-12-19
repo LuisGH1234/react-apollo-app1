@@ -1,22 +1,10 @@
 import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
-import { Button } from "@material-ui/core";
+import { Button, Container, Typography } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
+import { GET_USERS } from "../../queries";
 
-const GET_USERS = gql`
-    {
-        users(page: 1) {
-            users {
-                id
-                firstName
-                lastName
-            }
-            count
-        }
-    }
-`;
 const array: React.ReactNode[] = [];
 for (let i = 0; i < 10; i++) {
     array.push(<Skeleton style={{ backgroundColor: "red" }} variant="text" />);
@@ -24,11 +12,11 @@ for (let i = 0; i < 10; i++) {
 
 function Variants() {
     return (
-        <div>
-            {array.map(x => (
-                <Skeleton variant="text" />
+        <Container fixed>
+            {array.map((x, i) => (
+                <Skeleton variant="text" key={i} />
             ))}
-        </div>
+        </Container>
     );
 }
 
@@ -42,9 +30,9 @@ const PrintUsers: React.FC = () => {
 
     if (loading) return <Variants />;
     if (error) return <p>ERROR!!! :(</p>;
-    console.log(data);
+    // console.log(data);
     return (
-        <div>
+        <Container fixed>
             {data.users.users.map((x: any, i: number) => (
                 <p key={i}>
                     {x.id}: {x.firstName}, {x.lastName}
@@ -54,7 +42,7 @@ const PrintUsers: React.FC = () => {
             <Button color="primary" variant="contained" onClick={() => history.push("/test")}>
                 Go to test page
             </Button>
-        </div>
+        </Container>
     );
 };
 
